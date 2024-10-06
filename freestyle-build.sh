@@ -1,1 +1,1 @@
-npm --version
+java --version
