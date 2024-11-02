@@ -10,7 +10,7 @@ pipeline{
             {
           steps{
               script{
-                   gv = load "script.grrovy"
+                   gv = load "script.groovy"
               }
               echo 'building the application...'
               }
