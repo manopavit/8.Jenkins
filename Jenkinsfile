@@ -6,31 +6,50 @@ pipeline{
     }
     stages
     {
-        stage("build")
+        stage("init")
             {
           steps{
+              script{
+                   gv = load "script.grrovy"
+              }
               echo 'building the application...'
               }
             }   
-        stage("test"){
-            when{
-              expression{
-                params.executeTests
-          }
+        stage("build"){
+            steps{
+              script{
+                   gv.build()
+                   } 
                 }
-                 
+                
           steps{
               echo 'testing the application...'
                }
-          }    
-          
+
+        }
+              
+        stage("test"){
+            when {
+                   expression {
+                             params.executeTests
+                   }
+            }
+        } 
         stage("deploy")
               {
-          steps{
-              echo 'deploying the application...'
-              echo "deployinh version ${params.VERSION}"
-               }
-        }
-      }
+                input{
+                    message "Select the environment to deploy to"
+                    ok "Done"
+                    parameters{
+                           choice(name: 'ENV' , choices: ['dev', 'staging' , 'prod'], description: '')
+                    }
+                }
+                steps
+                  {
+                      gv.deployApp()
+                      echo "Deploying to ${ENV}"
+                  }
+              }  
+    }
 
 }
