@@ -18,14 +18,10 @@ pipeline{
         stage("build"){
             steps{
               script{
-                   gv.build()
+                   gv.buildApp()
                    } 
-                }
-                
-          steps{
-              echo 'testing the application...'
-               }
-
+                }                
+         
         }
               
         stage("test"){
